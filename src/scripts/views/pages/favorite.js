@@ -1,13 +1,12 @@
-import TheRestaurantDbSource from '../../data/therestaurantdb-source';
+import FavoriteRestaurantIdb from '../../data/favorite-restaurant-idb';
 import { createErrorMessageTemplate, createLoadingIndicatorTemplate, createRestaurantItemTemplate } from '../templates/template-creator';
 
-const Home = {
+const Favorite = {
   async render() {
     return `
       <section class='content'>
-        <h1 class='content__label'>Explore Restaurant</h1>
-        <div class='posts' id='posts'>
-        </div>
+        <h1 class='content__label'>Favorite Restaurant</h1>
+        <div class='posts' id='posts'></div>
       </section>
     `;
   },
@@ -18,18 +17,24 @@ const Home = {
     try {
       restaurantsContainer.innerHTML = createLoadingIndicatorTemplate();
 
-      const restaurants = await TheRestaurantDbSource.restaurantList();
+      const restaurants = await FavoriteRestaurantIdb.getAllRestaurants();
       restaurantsContainer.innerHTML = '';
+      if (restaurants.length !== 0) {
+        restaurants.forEach((restaurant) => {
+          restaurantsContainer.innerHTML += createRestaurantItemTemplate(restaurant);
+        });
+      } else {
+        restaurantsContainer.innerHTML += createErrorMessageTemplate();
 
-      restaurants.forEach((restaurant) => {
-        restaurantsContainer.innerHTML += createRestaurantItemTemplate(restaurant);
-      });
+        const errorMessage = document.querySelector('#error-indicator__message');
+        errorMessage.innerText = 'Your favorite restaurant is empty.';
+      }
     } catch (error) {
       restaurantsContainer.innerHTML = '';
       restaurantsContainer.innerHTML += createErrorMessageTemplate();
 
       const errorMessage = document.querySelector('#error-indicator__message');
-      errorMessage.innerText = 'Failed to fetch restaurant data. Please try again later.';
+      errorMessage.innerText = 'Failed to fetch favorite restaurant data. Please try again later.';
 
       console.error('Error fetching restaurant data:', error);
     }
@@ -42,4 +47,4 @@ const Home = {
   },
 };
 
-export default Home;
+export default Favorite;
