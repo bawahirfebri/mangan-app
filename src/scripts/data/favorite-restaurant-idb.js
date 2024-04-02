@@ -15,7 +15,6 @@ const FavoriteRestaurantIdb = {
       return;
     }
 
-    // eslint-disable-next-line consistent-return
     return (await dbPromise).get(OBJECT_STORE_NAME, id);
   },
 
@@ -24,12 +23,10 @@ const FavoriteRestaurantIdb = {
   },
 
   async putRestaurant(restaurant) {
-    // eslint-disable-next-line no-prototype-builtins
     if (!restaurant.hasOwnProperty('id')) {
       return;
     }
 
-    // eslint-disable-next-line consistent-return
     return (await dbPromise).put(OBJECT_STORE_NAME, restaurant);
   },
 
@@ -39,7 +36,7 @@ const FavoriteRestaurantIdb = {
 
   async searchRestaurants(query) {
     return (await this.getAllRestaurants()).filter((restaurant) => {
-      const loweredCaseRestaurantTitle = (restaurant.title || '-').toLowerCase();
+      const loweredCaseRestaurantTitle = (restaurant.name || '-').toLowerCase();
       const jammedRestaurantTitle = loweredCaseRestaurantTitle.replace(/\s/g, '');
 
       const loweredCaseQuery = query.toLowerCase();

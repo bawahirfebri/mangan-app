@@ -2,25 +2,25 @@ import CONFIG from '../../globals/config';
 
 const createRestaurantItemTemplate = (restaurant) => `
   <article class='post-item'>
-    <img 
-      class='post-item__thumbnail'
-      src=${restaurant.pictureId ? CONFIG.BASE_IMG_URL + restaurant.pictureId : 'https://picsum.photos/id/666/800/450?grayscale'} 
-      alt=${restaurant.name}
+    <img
+      class='post-item__thumbnail lazyload'
+      data-src=${restaurant.pictureId ? CONFIG.BASE_IMG_URL + restaurant.pictureId : 'https://picsum.photos/id/666/800/450?grayscale'} 
+      alt=${restaurant.name || '-'}
     >
     <p class='post-item__city'>
-      ${restaurant.city}
+      ${restaurant.city || '-'}
     </p>
     <div class='post-item__content'>
       <div class='post-item__content-top'>
         <h1 class='post-item__title'>
-          <a href='#/detail/${restaurant.id}'>${restaurant.name}</a>
+          <a href='#/detail/${restaurant.id}'>${restaurant.name || '-'}</a>
         </h1>
         <p class='post-item__rating'>
-          &starf; ${restaurant.rating}
+          &starf; ${restaurant.rating || '-'}
         </p>
       </div>
       <p class='post-item__description'>
-        ${restaurant.description}
+        ${restaurant.description || '-'}
       </p>
     </div>
   </article>
@@ -58,7 +58,7 @@ const createRestaurantDetailTemplate = (restaurant) => `
       <input type='text' id='name' name='name' required>
       <label for='review'>Review</label>
       <textarea name='review' id='review' required></textarea>
-      <button type='submit'>Comment</button>
+      <button type='submit' id="review__form-button">Comment</button>
     </form>
     <div class='restaurant__reviews' id='restaurant__reviews'></div>
   </div>

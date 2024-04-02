@@ -8,8 +8,7 @@ import FavoriteRestaurantIdb from '../../data/favorite-restaurant-idb';
 const Detail = {
   async render() {
     return `
-      <div id='restaurant' class='restaurant'>
-      </div>
+      <div id='restaurant' class='restaurant'></div>
       <div id='likeButtonContainer'></div>
     `;
   },

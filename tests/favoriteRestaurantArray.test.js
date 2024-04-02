@@ -16,12 +16,10 @@ const FavoriteRestaurantArray = {
   },
 
   putRestaurant(restaurant) {
-    // eslint-disable-next-line no-prototype-builtins
     if (!restaurant.hasOwnProperty('id')) {
       return;
     }
 
-    // pastikan id ini belum ada dalam daftar favoriteRestaurants
     if (this.getRestaurant(restaurant.id)) {
       return;
     }
@@ -30,15 +28,13 @@ const FavoriteRestaurantArray = {
   },
 
   deleteRestaurant(id) {
-    // cara boros menghapus restaurant dengan meng-copy restaurant yang ada
-    // kecuali restaurant dengan id == id
     favoriteRestaurants = favoriteRestaurants.filter((restaurant) => restaurant.id != id);
   },
 
   searchRestaurants(query) {
     return this.getAllRestaurants()
       .filter((restaurant) => {
-        const loweredCaseRestaurantTitle = (restaurant.title || '-').toLowerCase();
+        const loweredCaseRestaurantTitle = (restaurant.name || '-').toLowerCase();
         const jammedRestaurantTitle = loweredCaseRestaurantTitle.replace(/\s/g, '');
 
         const loweredCaseQuery = query.toLowerCase();

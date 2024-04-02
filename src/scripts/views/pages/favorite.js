@@ -1,43 +1,18 @@
 import FavoriteRestaurantIdb from '../../data/favorite-restaurant-idb';
-import { createErrorMessageTemplate, createLoadingIndicatorTemplate, createRestaurantItemTemplate } from '../templates/template-creator';
+import FavoriteRestaurantView from './liked-restaurants/favorite-restaurant-view';
+import FavoriteRestaurantShowPresenter from './liked-restaurants/favorite-restaurant-show-presenter';
+import FavoriteRestaurantSearchPresenter from './liked-restaurants/favorite-restaurant-search-presenter';
+
+const view = new FavoriteRestaurantView();
 
 const Favorite = {
   async render() {
-    return `
-      <section class='content'>
-        <h1 class='content__label'>Favorite Restaurant</h1>
-        <div class='posts' id='posts'></div>
-      </section>
-    `;
+    return view.getTemplate();
   },
 
   async afterRender() {
-    const restaurantsContainer = document.querySelector('#posts');
-
-    try {
-      restaurantsContainer.innerHTML = createLoadingIndicatorTemplate();
-
-      const restaurants = await FavoriteRestaurantIdb.getAllRestaurants();
-      restaurantsContainer.innerHTML = '';
-      if (restaurants.length !== 0) {
-        restaurants.forEach((restaurant) => {
-          restaurantsContainer.innerHTML += createRestaurantItemTemplate(restaurant);
-        });
-      } else {
-        restaurantsContainer.innerHTML += createErrorMessageTemplate();
-
-        const errorMessage = document.querySelector('#error-indicator__message');
-        errorMessage.innerText = 'Your favorite restaurant is empty.';
-      }
-    } catch (error) {
-      restaurantsContainer.innerHTML = '';
-      restaurantsContainer.innerHTML += createErrorMessageTemplate();
-
-      const errorMessage = document.querySelector('#error-indicator__message');
-      errorMessage.innerText = 'Failed to fetch favorite restaurant data. Please try again later.';
-
-      console.error('Error fetching restaurant data:', error);
-    }
+    new FavoriteRestaurantShowPresenter({ view, favoriteRestaurants: FavoriteRestaurantIdb });
+    new FavoriteRestaurantSearchPresenter({ view, favoriteRestaurants: FavoriteRestaurantIdb });
 
     const header = document.querySelector('#header');
     header.classList.remove('detail-header');
